@@ -43,7 +43,7 @@ class LoginView(FormView, TestCookie):
     @method_decorator(user_passes_test(check_user_auth, login_url="/", redirect_field_name=None))
     def dispatch(self, request, *args, **kwargs):
         """
-        Override dispatch method with decorator. Check is use is authenticated,
+        Override dispatch method with decorator. Check is user is authenticated,
         redirect to `login_url`. Otherwise returns `dispatch` method.
 
         """
@@ -115,7 +115,7 @@ class RegisterView(FormView, TestCookie):
     @method_decorator(user_passes_test(check_user_auth, login_url="/", redirect_field_name=None))
     def dispatch(self, request, *args, **kwargs):
         """
-        Override dispatch method with decorator. Check is use is authenticated,
+        Override dispatch method with decorator. Check is user is authenticated,
         redirect to `login_url`. Otherwise returns `dispatch` method.
 
         """
