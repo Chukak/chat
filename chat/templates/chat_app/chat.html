@@ -1,0 +1,29 @@
+<!-- Extends base.html from templates dir-->
+{% extends 'base.html' %}
+<!-- Load static from staticfiles_dirs-->
+{% load staticfiles %}
+{% block title %}Chat{% endblock title %}
+
+{% block head %}
+<link href="{% static 'css/styles.css' %}" rel="stylesheet">
+{% endblock head %}
+
+{% block content %}
+<!-- Aligned on center -->
+<div class="col-md-8 col-md-offset-2">
+    <!-- Place for messages -->
+    <!-- Default empty -->
+    <div id="messages">
+    </div>
+    <!-- form for send messages -->
+    <form class="form-group form-chat">
+        <input class="form-control" id="message">
+        <input class="btn btn-primary" type="submit" value="Send">
+    </form>
+</div>
+{% endblock content %}
+
+<!-- Script for Channels consumers -->
+{% block script %}
+<script src="{% static 'js/chat_websocket.js' %}"></script>
+{% endblock script %}
