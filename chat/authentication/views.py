@@ -51,7 +51,7 @@ class LoginView(FormView, TestCookie):
 
     def get(self, request, *args, **kwargs):
         """
-        Set test cookie, and returns get method.
+        Set test cookie, and returns `get` method.
 
         """
         request.session.set_test_cookie()
@@ -123,7 +123,7 @@ class RegisterView(FormView, TestCookie):
 
     def get(self, request, *args, **kwargs):
         """
-        Set test cookie, and returns get method.
+        Set test cookie, and returns `get` method.
 
         """
         request.session.set_test_cookie()
