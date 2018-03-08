@@ -12,16 +12,16 @@ class LoginForm(form.Form):
     2. password - password user
 
     """
-    nickname = forms.CharField(required=True, label='Enter you nickname',
+    nickname = forms.CharField(required=True, label="Enter you nickname",
                                widget=forms.TextInput(attrs={
-                                   'placeholder': 'Nickname',
-                                   'class': 'form-control',
+                                   "placeholder": "Nickname",
+                                   "class": "form-control",
                                }))
 
-    password = forms.CharField(required=True, label='Enter you password',
+    password = forms.CharField(required=True, label="Enter you password",
                                widget=forms.PasswordInput(attrs={
-                                   'placeholder': 'Password',
-                                   'class': 'form-control',
+                                   "placeholder": "Password",
+                                   "class": "form-control",
                                }))
 
 
@@ -38,21 +38,21 @@ class RegisterForm(form.Form):
     Used django user model.
     """
     nickname = forms.CharField(
-        required=True, label='Enter you nickname',
+        required=True, label="Enter you nickname",
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Nickname',
-                'class': 'form-control',
+                "placeholder": "Nickname",
+                "class": "form-control",
             }
         )
     )
 
     password = forms.CharField(
-        required=True, label='Enter you password',
+        required=True, label="Enter you password",
         widget=forms.PasswordInput(
             attrs={
-                'placeholder': 'Password',
-                'class': 'form-control',
+                "placeholder": "Password",
+                "class": "form-control",
             }
         )
     )
@@ -63,7 +63,7 @@ class RegisterForm(form.Form):
 
         Return `nickname` if is valid, otherwise raise `ValidationError`.
         """
-        nickname = self.cleaned_data['nickname']
+        nickname = self.cleaned_data["nickname"]
         if get_user_model().objects.filter(username=nickname).count():
-            raise ValidationError('This login already exists.')
+            raise ValidationError("This login already exists.")
         return nickname
