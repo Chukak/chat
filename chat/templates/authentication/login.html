@@ -1,0 +1,45 @@
+<!-- Extends base.html from templates dir-->
+{% extends 'base.html' %}
+<!-- Load static from staticfiles_dirs-->
+{% load staticfiles %}
+{% block title %}Login{% endblock title %}
+
+{% block head %}
+<link href="{% static 'css/styles.css' %}" rel="stylesheet">
+{% endblock head %}
+
+{% block content %}
+<!-- Empty place size of 200px height -->
+<div class="empty">
+</div>
+<!-- Aligned on center -->
+<div class="col-md-4 col-md-offset-4">
+    <!-- Set form for login -->
+    <form class="form-signin" method="post">
+        <!-- Token django CSRF -->
+        {% csrf_token %}
+            <!-- Get field and error for that field from dict of errors -->
+            {% for key, error in form.errors.items %}
+                <!--Set error style -->
+                <div class="alert alert-warning alert-dismissible" role="'alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times</span>
+                    </button>
+                    <strong>Error!</strong>{{ error }}
+                </div>
+            <!-- End cycle -->
+            {% endfor %}
+            <!-- Label for nickname field -->
+            <label>{{ form.nickname.label }}</label>
+            <!-- Field nickname -->
+            {{ form.nickname }}
+            <!-- Label for password field -->
+            <label>{{ form.password.label }}</label>
+            <!-- Password field -->
+            {{ form.password }}
+        <!-- Post form -->
+        <input class="btn btn-primary btn-block" type="submit" value="Go">
+        <a href="{% url 'authentication:register' %}" type="submit">Sign in</a>
+    </form>
+</div>
+{% endblock content %}
