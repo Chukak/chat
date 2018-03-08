@@ -2,6 +2,9 @@ from django.shortcuts import redirect, HttpResponseRedirect
 from django.views.generic import FormView
 from django.forms import ValidationError
 from .forms import RegisterForm, LoginForm
+from .utils import check_user_auth
+from django.contrib.auth.decorators import user_passes_test
+from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate, login, logout, get_user_model
 
 
@@ -33,9 +36,18 @@ class LoginView(FormView, TestCookie):
     2. post - when post method is used.
     3. form_valid - check valid form or not
     """
-    template_name = 'authentication/login.html'
+    template_name = "authentication/login.html"
     form_class = LoginForm
-    success_url = '/chat/'
+    success_url = "/chat/"
+
+    @method_decorator(user_passes_test(check_user_auth, login_url="/", redirect_field_name=None))
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Override dispatch method with decorator. Check is use is authenticated,
+        redirect to `login_url`. Otherwise returns `dispatch` method.
+
+        """
+        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         """
@@ -70,15 +82,15 @@ class LoginView(FormView, TestCookie):
         Otherwise, add error in form and returns `form_invalid` method.
 
         """
-        user_auth = authenticate(self.request, username=form.cleaned_data['nickname'],
-                                 password=form.cleaned_data['password'])
+        user_auth = authenticate(self.request, username=form.cleaned_data["nickname"],
+                                 password=form.cleaned_data["password"])
         if user_auth is not None:
             login(self.request, user_auth)
             # Redirect chat/
             return redirect(self.get_success_url())
         else:
             # Add error in form for field nickname
-            form.add_error('nickname', ValidationError('Invalid Login or password.'))
+            form.add_error("nickname", ValidationError("Invalid Login or password."))
             return self.form_invalid(form)
 
 
@@ -97,8 +109,17 @@ class RegisterView(FormView, TestCookie):
 
     """
     form_class = RegisterForm
-    success_url = '/chat/'
-    template_name = 'authentication/register.html'
+    success_url = "/chat/"
+    template_name = "authentication/register.html"
+
+    @method_decorator(user_passes_test(check_user_auth, login_url="/", redirect_field_name=None))
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Override dispatch method with decorator. Check is use is authenticated,
+        redirect to `login_url`. Otherwise returns `dispatch` method.
+
+        """
+        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         """
@@ -133,11 +154,12 @@ class RegisterView(FormView, TestCookie):
         Otherwise, returns `form_invalid` method.
 
         """
-        user = get_user_model().objects.create_user(username=form.cleaned_data['nickname'],
-                                                    password=form.cleaned_data['password'])
+        user = get_user_model().objects.create_user(username=form.cleaned_data["nickname"],
+                                                    password=form.cleaned_data["password"])
         user.save()
         # Authenticate this user
-        user_auth = authenticate(username=form.cleaned_data['nickname'], password=form.cleaned_data['password'])
+        user_auth = authenticate(username=form.cleaned_data["nickname"],
+                                 password=form.cleaned_data["password"])
         if user_auth is not None:
             # Login this user
             login(self.request, user_auth)
@@ -154,4 +176,4 @@ def logout_view(request):
 
     """
     logout(request)
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect("/")
