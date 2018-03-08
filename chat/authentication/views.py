@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, HttpResponseRedirect
 from django.views.generic import FormView
-from .forms import RegisterForm
+from django.forms import ValidationError
+from .forms import RegisterForm, LoginForm
 from django.contrib.auth import authenticate, login, logout, get_user_model
 
 
@@ -17,6 +18,68 @@ class TestCookie:
             return True
         else:
             return False
+
+
+class LoginView(FormView, TestCookie):
+    """
+    Login view.
+    Has 3 attributes:
+    1. form_class - form class, which is used.
+    2. success_url - url, which is redirected in case of success.
+    3. template_name - path to template for this view.
+
+    Also, has 3 override methods:
+    1. get - when get method is used.
+    2. post - when post method is used.
+    3. form_valid - check valid form or not
+    """
+    template_name = 'authentication/login.html'
+    form_class = LoginForm
+    success_url = '/chat/'
+
+    def get(self, request, *args, **kwargs):
+        """
+        Set test cookie, and returns get method.
+
+        """
+        request.session.set_test_cookie()
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        """
+        Checks is cookie is worked. If cookie is worked, validate form.
+        Returns `form_valid` method if worked, otherwise `form_invalid` method.
+
+        If cookie not worked, returns `form_invalid` method.
+
+        """
+        form = self.get_form()
+        if self.test_cookie(request):
+            if form.is_valid():
+                return self.form_valid(form)
+            else:
+                return self.form_invalid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        """
+        Authenticate and login new user.
+        If user is authenticated, returns redirect to success url.
+
+        Otherwise, add error in form and returns `form_invalid` method.
+
+        """
+        user_auth = authenticate(self.request, username=form.cleaned_data['nickname'],
+                                 password=form.cleaned_data['password'])
+        if user_auth is not None:
+            login(self.request, user_auth)
+            # Redirect chat/
+            return redirect(self.get_success_url())
+        else:
+            # Add error in form for field nickname
+            form.add_error('nickname', ValidationError('Invalid Login or password.'))
+            return self.form_invalid(form)
 
 
 class RegisterView(FormView, TestCookie):
