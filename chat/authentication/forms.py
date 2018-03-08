@@ -4,6 +4,27 @@ from django import forms
 from django.contrib.auth import get_user_model
 
 
+class LoginForm(form.Form):
+    """
+    Login form.
+    Has 2 attributes:
+    1. nickname - nickname user
+    2. password - password user
+
+    """
+    nickname = forms.CharField(required=True, label='Enter you nickname',
+                               widget=forms.TextInput(attrs={
+                                   'placeholder': 'Nickname',
+                                   'class': 'form-control',
+                               }))
+
+    password = forms.CharField(required=True, label='Enter you password',
+                               widget=forms.PasswordInput(attrs={
+                                   'placeholder': 'Password',
+                                   'class': 'form-control',
+                               }))
+
+
 class RegisterForm(form.Form):
     """
     Register form.
@@ -40,7 +61,7 @@ class RegisterForm(form.Form):
         """
         Validate nickname from form. Check, if the nickname exists.
 
-        Return nickname if is valid, otherwise raise ValidationError.
+        Return `nickname` if is valid, otherwise raise `ValidationError`.
         """
         nickname = self.cleaned_data['nickname']
         if get_user_model().objects.filter(username=nickname).count():
