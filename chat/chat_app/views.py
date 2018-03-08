@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 
 class ChatView(TemplateView):
@@ -11,7 +12,7 @@ class ChatView(TemplateView):
     """
     template_name = "chat_app/chat.html"
 
-    @login_required(redirect_field_name=None, login_url="/")
+    @method_decorator(login_required(redirect_field_name=None, login_url="/"))
     def dispatch(self, request, *args, **kwargs):
         """
         Checks is user is authenticated, return `dispatch` method.
