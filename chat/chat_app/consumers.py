@@ -5,6 +5,13 @@ import datetime
 
 
 class ChatConsumer(WebsocketConsumer):
+    """
+    Chat consumer.
+    1. connect - connects to websocket, open connection.
+    2. receive - send message, time, username.
+    3. disconnect - close connection.
+
+    """
     def connect(self):
         self.accept()
         self.user = self.scope['user']
