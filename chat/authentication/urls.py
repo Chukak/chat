@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from authentication.views import RegisterView, LoginView, logout_view
+from .views import RegisterView, LoginView, logout_view
 
 """
 Urls configuration.
@@ -8,9 +8,9 @@ Urls configuration.
 3. logout/ - logout page, url - logout/
 
 """
-app_name = 'authentication'
+app_name = "authentication"
 urlpatterns = [
-     url(r'register/', RegisterView.as_view(), name='register'),
-     url(r'login/', LoginView.as_view(), name='login'),
-     url(r'logout/', logout_view, name='logout'),
+     url(r'register/', RegisterView.as_view(), name="register"),
+     url(r'login/', LoginView.as_view(), name="login"),
+     url(r'logout/', logout_view, name="logout"),
 ]
