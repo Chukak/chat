@@ -1,7 +1,8 @@
 // full ready web page
 $(document).ready(function() {
     // create new socket
-    socket = new WebSocket('ws://' + window.location.host + '/chat/');
+    scheme = window.location.protocol == 'https' ? 'wss' : 'ws';
+    socket = new WebSocket(scheme + '://' + window.location.host + '/chat/');
     // this func call when websocket connect
     socket.onopen = function() {
         console.log('connect')
@@ -17,6 +18,7 @@ $(document).ready(function() {
         // create messages and append in p tag
         $('#messages').append('<p>' + '<strong>' + time + '</strong> ' + '<i>' + user + '</i>' +
             ': ' + '<b>' +  message + '</b>' + '</p>');
+        $('#messages').scrollTop($('#messages').height())
         $('.form-chat')[0].reset();
     }
     // this func call when websocket close
