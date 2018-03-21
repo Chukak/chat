@@ -8,5 +8,5 @@ Urls configuration.
 """
 app_name = "chat"
 urlpatterns = [
-    url(r'', ChatView.as_view(), name="chat"),
+    url(r'^$', ChatView.as_view(), name="chat"),
 ]

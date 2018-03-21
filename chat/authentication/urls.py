@@ -10,7 +10,7 @@ Urls configuration.
 """
 app_name = "authentication"
 urlpatterns = [
-     url(r'register/', RegisterView.as_view(), name="register"),
-     url(r'login/', LoginView.as_view(), name="login"),
-     url(r'logout/', logout_view, name="logout"),
+     url(r'register/$', RegisterView.as_view(), name="register"),
+     url(r'login/$', LoginView.as_view(), name="login"),
+     url(r'logout/$', logout_view, name="logout"),
 ]
