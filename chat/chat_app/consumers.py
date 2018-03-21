@@ -14,9 +14,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     """
     async def connect(self):
         await self.accept()
-        print(self.scope)
         self.user = self.scope['user']
-        print(self.user)
 
     async def receive(self, text_data=None, bytes_data=None):
         content = json.loads(text_data)
