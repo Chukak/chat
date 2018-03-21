@@ -1,10 +1,10 @@
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 import json
 import datetime
 
 
-class ChatConsumer(WebsocketConsumer):
+class ChatConsumer(AsyncWebsocketConsumer):
     """
     Chat consumer.
     1. connect - connects to websocket, open connection.
@@ -12,13 +12,15 @@ class ChatConsumer(WebsocketConsumer):
     3. disconnect - close connection.
 
     """
-    def connect(self):
-        self.accept()
+    async def connect(self):
+        await self.accept()
+        print(self.scope)
         self.user = self.scope['user']
+        print(self.user)
 
-    def receive(self, text_data=None, bytes_data=None):
+    async def receive(self, text_data=None, bytes_data=None):
         content = json.loads(text_data)
-        self.send(
+        await self.send(
             json.dumps(
                 {
                     'time': datetime.datetime.now().strftime('%H:%M:%S'),
@@ -28,5 +30,5 @@ class ChatConsumer(WebsocketConsumer):
             )
         )
 
-    def disconnect(self, code=None):
-        self.close()
+    async def disconnect(self, code=None):
+        await self.close()
