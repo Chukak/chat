@@ -29,6 +29,3 @@ python manage.py migrate
 Run django server
 
 ``` python manage.py runserver ```
-
-## Author
-[chukak](https://github.com/Chukak)
