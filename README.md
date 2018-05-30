@@ -4,7 +4,7 @@
 This is a simple chat with authentication, created on Django and Channels.
 
 ## Getting started
-You needs git. Clone this repository.
+Clone this repository.
 
 ```
 git clone https://github.com/Chukak/chat.git
@@ -21,11 +21,10 @@ pip install -r requirements.txt
 ### Start project
 Make django migrations.
 
-``` python manage.py makemigrations ```
-
-Migrate.
-
-``` python manage.py migrate ```
+``` 
+python manage.py makemigrations
+python manage.py migrate 
+```
 
 Run django server
 
